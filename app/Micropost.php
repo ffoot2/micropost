@@ -9,6 +9,6 @@ class Micropost extends Model
     protected $fillable = ['content', 'user_id'];
 
     public function user(){
-      return $this->belongTo(User::class);
+      return $this->belongsTo(User::class);
     }
 }
