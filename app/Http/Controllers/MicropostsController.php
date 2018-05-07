@@ -15,7 +15,7 @@ class MicropostsController extends Controller
        $data = [];
        if (\Auth::check()) {
          $user = \Auth::user();
-         $microposts = $user->microposts()->orderBy('create_at', 'desc')->paginate(10);
+         $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
 
          $data = [
            'user' => $user,
@@ -42,7 +42,7 @@ class MicropostsController extends Controller
      }
 
      public function destroy($id){
-       $micropost = \App\Micropost::find();
+       $micropost = \App\Micropost::find($id);
 
        if(\Auth::user()->id === $micropost->user_id){
          $micropost->delete();
