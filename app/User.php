@@ -84,4 +84,49 @@ class User extends Authenticatable
         $follow_user_ids[] = $this->id;
         return Micropost::whereIn('user_id', $follow_user_ids);
     }
+    
+    
+    
+    //HACK 上と共通化できないか？？
+    public function favorittings(){
+         return $this->belongsToMany(User::class, 'user_microposts', 'user_id', 'microposts_id')->withTimestamps();
+    }
+    
+    public function favoritters(){
+        return $this->belongsToMany(User::class, 'user_microposts', 'microposts_id', 'user_id')->withTimestamps();
+    }
+    
+    public function favorite($userId)
+    {
+        $exist = $this->is_favoritting($userId);
+        $its_me = $this->id == $userId;
+dd($its_me);
+        // if ($exist || $its_me) {
+        if ($exist) {
+            dd('a');
+            return false;
+        } else {
+            $this->favorittings()->attach($userId);
+            return true;
+        }
+    }
+    
+    public function unfavorite($userId)
+    {
+        $exist = $this->is_favoritting($userId);
+        $its_me = $this->id == $userId;
+        dd($userId . '|' . $exist . '|' . $its_me . '|' . $this->id);
+        if ($exist && !$its_me) {
+            dd('a');
+            $this->favorittings()->detach($userId);
+            return true;
+        } else {
+            dd('b');
+            return false;
+        }
+    }
+    
+    public function is_favoritting($userId) {
+        return $this->favorittings()->where('microposts_id', $userId)->exists();
+    }
 }

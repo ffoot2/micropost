@@ -13,6 +13,18 @@
                 <p>{!! nl2br(e($micropost->content)) !!}</p>
             </div>
             <div>
+              @if(Auth::user()->is_favoritting($micropost->id)) 
+                    {!! Form::open(['route' => ['favorites.destroy', $micropost->id], 'method' => 'delete']) !!}
+                      {!! Form::submit('Unfavorite', ['class' => 'btn btn-warning btn-xs']) !!}
+                    {!! Form::close() !!}
+                    
+                  @else
+                    {{-- {!! Form::open(['route' => ['favorites.store', $micropost->id], 'method' => 'post']) !!} --}}
+                    {!! Form::open(['url' => route('favorites.store', ['id' => $micropost->id]), 'method' => 'post']) !!}
+                      {!! Form::submit('お気に入り', ['class' => 'btn btn-default btn-xs']) !!}
+                    {!! Form::close() !!}
+                    
+              @endif
               @if(Auth::user()->id == $micropost->user_id)
                 {!! Form::open(['route' => ['microposts.destroy', $micropost->id], 'method' => 'delete']) !!}
                   {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
