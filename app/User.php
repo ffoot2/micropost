@@ -99,11 +99,8 @@ class User extends Authenticatable
     public function favorite($userId)
     {
         $exist = $this->is_favoritting($userId);
-        $its_me = $this->id == $userId;
-dd($its_me);
-        // if ($exist || $its_me) {
+        
         if ($exist) {
-            dd('a');
             return false;
         } else {
             $this->favorittings()->attach($userId);
@@ -114,14 +111,11 @@ dd($its_me);
     public function unfavorite($userId)
     {
         $exist = $this->is_favoritting($userId);
-        $its_me = $this->id == $userId;
-        dd($userId . '|' . $exist . '|' . $its_me . '|' . $this->id);
-        if ($exist && !$its_me) {
-            dd('a');
+        
+        if ($exist) {
             $this->favorittings()->detach($userId);
             return true;
         } else {
-            dd('b');
             return false;
         }
     }

@@ -14,12 +14,12 @@
             </div>
             <div>
               @if(Auth::user()->is_favoritting($micropost->id)) 
-                    {!! Form::open(['route' => ['favorites.destroy', $micropost->id], 'method' => 'delete']) !!}
-                      {!! Form::submit('Unfavorite', ['class' => 'btn btn-warning btn-xs']) !!}
+                    {{-- {!! Form::open(['route' => ['favorites.destroy', $micropost->id], 'method' => 'delete']) !!} --}}
+                    {!! Form::open(['url' => route('favorites.destroy', ['id' => $micropost->id]), 'method' => 'delete']) !!}
+                      {!! Form::submit('お気に入り解除', ['class' => 'btn btn-warning btn-xs']) !!}
                     {!! Form::close() !!}
                     
                   @else
-                    {{-- {!! Form::open(['route' => ['favorites.store', $micropost->id], 'method' => 'post']) !!} --}}
                     {!! Form::open(['url' => route('favorites.store', ['id' => $micropost->id]), 'method' => 'post']) !!}
                       {!! Form::submit('お気に入り', ['class' => 'btn btn-default btn-xs']) !!}
                     {!! Form::close() !!}
