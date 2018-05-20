@@ -14,7 +14,6 @@
             </div>
             <div>
               @if(Auth::user()->is_favoritting($micropost->id)) 
-                    {{-- {!! Form::open(['route' => ['favorites.destroy', $micropost->id], 'method' => 'delete']) !!} --}}
                     {!! Form::open(['url' => route('favorites.destroy', ['id' => $micropost->id]), 'method' => 'delete']) !!}
                       {!! Form::submit('お気に入り解除', ['class' => 'btn btn-warning btn-xs']) !!}
                     {!! Form::close() !!}

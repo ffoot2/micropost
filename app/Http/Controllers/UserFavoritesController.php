@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class UserFavoritesController extends Controller
 {
@@ -19,5 +20,19 @@ class UserFavoritesController extends Controller
     {
         \Auth::user()->unfavorite($id);
         return redirect()->back();
+    }
+    
+    public function favorittings($id)
+    {
+        $user = User::find($id);
+        $favorittings = $user->favorittings()->paginate(10);
+        $data = [
+            'user' => $user,
+            'fav' => $favorittings,
+        ];
+
+        $data += $this->counts($user);
+
+        return view('favorite.favorite', $data);
     }
 }

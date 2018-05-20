@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use DB; //TODO
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -87,9 +89,12 @@ class User extends Authenticatable
     
     
     
-    //HACK 上と共通化できないか？？
     public function favorittings(){
-         return $this->belongsToMany(User::class, 'user_microposts', 'user_id', 'microposts_id')->withTimestamps();
+        // return $this->belongsToMany(User::class, 'user_microposts', 'user_id', 'microposts_id')->withTimestamps();
+        return $this->belongsToMany(Micropost::class, 'user_microposts', 'user_id', 'microposts_id')->withTimestamps();
+            // DB::enableQueryLog();
+        // $re = $this->belongsToMany(User::class, 'user_microposts', 'user_id', 'microposts_id')->withTimestamps();
+    //   dd(DB::getQueryLog());
     }
     
     public function favoritters(){
@@ -121,6 +126,11 @@ class User extends Authenticatable
     }
     
     public function is_favoritting($userId) {
-        return $this->favorittings()->where('microposts_id', $userId)->exists();
+           return $this->favorittings()->where('microposts_id', $userId)->exists();
+        /*   $sql = $this->favorittings()->where('microposts_id', $userId)->toSql();
+           dd($sql);
+        */
     }
+    
+    
 }
